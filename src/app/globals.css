@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .profile-header-container {
-  flex-basis: calc(70% - 10px); /* Adjust the width of the profile header container */
+  flex-basis: calc(70% - 10px); //* Adjust the width of the profile header container *//
   margin-right: auto; /* Add margin between the ProfileHeader and the articles */
   margin-left: auto;
 }
