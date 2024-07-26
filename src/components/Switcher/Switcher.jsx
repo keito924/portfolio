@@ -1,51 +1,40 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import "./Switcher.css";
 import PropTypes from "prop-types";
 
 const Switcher = ({ darkClassName = "dark-mode" }) => {
-  // Check the user's preferred color scheme
   const prefersDarkMode = useMemo(() => {
     if (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      // dark mode
       return true;
     }
-    return false; // look into the `prefers-color-scheme: dark` media query
+    return false;
   }, []);
 
-  // State to hold the selected theme
   const [isDarkMode, setIsDarkMode] = useState(prefersDarkMode);
 
-  // Apply the selected theme (dark or light) when the component mounts
   useEffect(() => {
     if (typeof window !== 'undefined') {
       applyTheme();
     }
   }, [isDarkMode]);
 
-  // Toggle between dark and light mode
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    console.log(!isDarkMode);
-  };
+  const toggleTheme = useCallback(() => {
+    setIsDarkMode(prevMode => !prevMode);
+  }, []);
 
-  // Apply the selected theme by adding/removing a class to the body element
-  const applyTheme = () => {
+  const applyTheme = useCallback(() => {
     if (isDarkMode) {
       document.body.classList.add(darkClassName);
-      // document.body.querySelector("profile-header").classList.add("light-font");
-      return "☀️";
     } else {
       document.body.classList.remove(darkClassName);
-      return "🌙";
     }
-  };
+  }, [isDarkMode, darkClassName]);
 
   return (
     <div className="light-dark-button">
-      {/* <div className="dark-mode"></div> */}
       <button onClick={toggleTheme} className="btn" data-testid="themeSwitcherButton">
-        {applyTheme()}
+        {isDarkMode ? "☀️" : "🌙"}
       </button>
     </div>
   );
