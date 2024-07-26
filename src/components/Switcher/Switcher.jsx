@@ -6,11 +6,11 @@ import PropTypes from "prop-types";
 const Switcher = ({ darkClassName = "dark-mode" }) => {
   // Check the user's preferred color scheme
   const prefersDarkMode = useMemo(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    if (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches) {
       // dark mode
       return true;
     }
-    return false; // FIXME: look into the `prefers-color-scheme: dark` media query
+    return false; // look into the `prefers-color-scheme: dark` media query
   }, []);
 
   // State to hold the selected theme
@@ -18,7 +18,9 @@ const Switcher = ({ darkClassName = "dark-mode" }) => {
 
   // Apply the selected theme (dark or light) when the component mounts
   useEffect(() => {
-    applyTheme();
+    if (typeof window !== 'undefined') {
+      applyTheme();
+    }
   }, [isDarkMode]);
 
   // Toggle between dark and light mode
@@ -38,6 +40,7 @@ const Switcher = ({ darkClassName = "dark-mode" }) => {
       return "🌙";
     }
   };
+
   return (
     <div className="light-dark-button">
       {/* <div className="dark-mode"></div> */}
